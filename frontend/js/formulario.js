@@ -9,13 +9,13 @@ window.onload = async () => {
     try {
         let response = await fetch(urlBase + id)
         let pelicula = await response.json()
-        let{title,rating,awards,length=duration,duration,release_date} = pelicula.data
+        let{title, rating, awards, length = duration, duration, release_date} = pelicula.data
         
-        $("title").value = title
-        $("rating").value = rating
+        $("title").value = title,
+        $("rating").value = rating,
+        $("awards").value = awards,
         $("length").value = length,
         $("release_date").value =moment(release_date).format("YYYY-MM-DD")
-        $("awards").value = awards
     } catch (error) {
         
     }
