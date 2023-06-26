@@ -7,33 +7,29 @@ window.onload = async () => {
     let id = query.has("id") && query.get("id");
 
     try {
+        let response = await fetch(urlBase + id)
+        let pelicula = await response.json()
+        let{title,rating,awards,length=duration,duration,release_date} = pelicula.data
         
-        let response = await fetch(urlBase + id);
-        let pelicula = await response.json();
-        let {title, rating, awards, length = duration, release_date} = pelicula.data
-
-        let dateFormat = moment(release_date).format("YYYY-MM-DD");
-
-        $("title").value = title;
-        $("rating").value = rating;
-        $("awards").value = awards;
-        $("length").value = duration;
-        $("release_date").value = dateFormat;
-
+        $("title").value = title
+        $("rating").value = rating
+        $("length").value = length,
+        $("release_date").value =moment(release_date).format("YYYY-MM-DD")
+        $("awards").value = awards
     } catch (error) {
-        console.error
+        
     }
-        document.querySelector(".formulario").addEventListener("submit", (e) => {
+        document.querySelector(".formulario").addEventListener("submit", async(e) => {
             e.preventDefault();
             try {
                 let response = await fetch(urlBase + "update/" + id, {
                     method: "PUT",
-                    body : JSON.stringify( {
+                    body : JSON.stringify({
                         title : $("title").value,
-                        // rating : $("rating").value,
-                        // awars : $("awards").value,
-                        // length : $("length").value,
-                        // release_date : $("release_date").value
+                        rating : $("rating").value,
+                        awards : $("awards").value,
+                        length : $("length").value,
+                        release_date : $("release_date").value
                     }),
                     headers : {
                         "Content-Type" : "application/json"
@@ -42,7 +38,7 @@ window.onload = async () => {
                 let result = await response.json()
                 console.log(result);
             } catch (error) {
-                
+                console.error(error);
             }
         })
 }
